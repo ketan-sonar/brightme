@@ -1,6 +1,7 @@
 # brightme
 
-A very simple command line tool to manage the brightness of an Apple Silicon MacBook.
+A very simple command line tool to manage the brightness of an Apple Silicon Macs.
+Not sure whether it works on Intel Macs.
 
 ## Installation
 
