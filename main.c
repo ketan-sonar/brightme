@@ -1,3 +1,4 @@
+#include <math.h>
 #include <stdio.h>
 
 #include <ApplicationServices/ApplicationServices.h>
@@ -15,7 +16,7 @@ int get_brightness(CGDirectDisplayID display)
         fprintf(stderr, "ERROR: could not get the display brightness!");
         exit(1);
     }
-    return (int)(brightness * 100);
+    return roundf(brightness * 100);
 }
 
 void set_brightness(CGDirectDisplayID display, float brightness)
@@ -46,6 +47,7 @@ int main(int argc, char **argv)
         printf("Brightness set to %d%%\n", get_brightness(main_display_id));
     } else {
         usage(stderr, program_name);
+        return 1;
     }
 
     return 0;
