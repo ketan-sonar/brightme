@@ -14,6 +14,6 @@ make
 ## Usage
 
 ```bash
-./brightme              # to get the display brightness
-./brightme <brightness> # to set the display brightness
+./brightme                      # to get the display brightness
+./brightme [brightness (0-100)] # to set the display brightness
 ```
