@@ -29,7 +29,7 @@ void set_brightness(CGDirectDisplayID display, float brightness)
 
 void usage(FILE *f, const char *program_name)
 {
-    fprintf(f, "Usage: %s [brightness]\n", program_name);
+    fprintf(f, "Usage: %s [brightness (0-100)]\n", program_name);
 }
 
 int main(int argc, char **argv)
@@ -41,14 +41,30 @@ int main(int argc, char **argv)
     if (argc == 1) {
         printf("Brightness: %d%%\n", get_brightness(main_display_id));
     } else if (argc == 2) {
-        char *brightness_str = argv[1];
-        float brightness = atoi(brightness_str) / 100.0;
-        set_brightness(main_display_id, brightness);
-        printf("Brightness set to %d%%\n", get_brightness(main_display_id));
+        char *param = argv[1];
+        char *endptr;
+        errno = 0;
+        long val = strtol(param, &endptr, 10);
+        if (
+            endptr == param || *endptr != '\0' ||
+            ((val == LONG_MIN || val == LONG_MAX) && errno == ERANGE) ||
+            val < 0 || val > 100
+        ) {
+            // no digits or non numeric chars found or val out of range
+            usage(stderr, program_name);
+            return EXIT_FAILURE;
+        } else {
+            float brightness = val / 100.0;
+            set_brightness(main_display_id, brightness);
+            printf(
+                "Brightness set to %d%%\n",
+                get_brightness(main_display_id)
+            );
+        }
     } else {
         usage(stderr, program_name);
-        return 1;
+        return EXIT_FAILURE;
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
